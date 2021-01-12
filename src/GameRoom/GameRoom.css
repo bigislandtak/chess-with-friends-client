@@ -8,13 +8,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(34, 34, 34);
+    background-color: #273136;
 }
 
 .board-container {
-    width: 600px;
-    height: 600px;
+    width: 1000px;
+    height: 1000px;
     background-color: white;
+    border: 5px solid #1D2528;
+    border-radius: 5px;
 }
 
 .board {
@@ -50,6 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: translate(0, 0);
 }
 
 .piece {
@@ -57,7 +60,83 @@
     max-height: 85%;
 }
 
-.preview {
-    max-width: 100px;
-    max-height: 100px;
+.chat-container {
+    width: 300px;
+    height: 1000px;
+    margin-left: 20px;
+}
+
+.chat {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.message-list-container {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 95%;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #1D2528;
+}
+
+.message-list {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: transparent;
+}
+
+.my-message-item {
+    margin-left: 80px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 70%;
+    font-size: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    background-color: #82cdff !important;
+    border: none !important;
+    border-radius: 5px !important;
+}
+
+.received-message-item {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 70%;
+    font-size: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    background-color: #0c9bfa !important;
+    border: none !important;
+    border-radius: 5px !important;
+}
+
+.message-form-container {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 3.75%;
+    margin-bottom: 5px;
+}
+
+.message-form {
+    width: 100%;
+    height: 100%;
+}
+
+.message-input-field:focus {
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(139, 110, 110, 0.6) !important;
 }

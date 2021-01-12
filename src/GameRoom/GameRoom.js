@@ -1,40 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { ListGroup, Form, InputGroup, Button } from "react-bootstrap";
 
 import "./GameRoom.css";
-import useGame from "./useGame";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import useSocket from "./useSocket";
 import Board from "./Board";
-
-export const GameRoomContext = React.createContext();
 
 const GameRoom = (props) => {
   console.log("GameRoom rendered")
 
   const { roomId } = props.match.params;
-  const [board, sendMove, playerColor, history] = useGame(roomId);
-  const playerViewBoard = (playerColor === 'w')? board.flat() : board.flat().reverse();
+  const { chess, chat } = useSocket(roomId);
+  const playerViewBoard = (chess.playerColor === 'w')? chess.board.flat() : chess.board.flat().reverse();
+  const [newMessage, setNewMessage] = React.useState("");
 
-  console.log(`Player color: ${playerColor}`)
+  let input = null;
+  useEffect(() => {
+    input.focus();
+  });
 
-  // May need to make context a state of GameRoom or useRef it.
-  // For more info, look up "Caveats" in react doc
-  const context = {
-    board: board,
-    move: sendMove,
-    playerColor: ""
+  const handleNewMessageChange = (event) => {
+    setNewMessage(event.target.value);
+  };
+
+  const handleSendMessage = () => {
+    chat.sendMessage(newMessage);
+    setNewMessage("");
+  };
+
+  const handleKeyPress = (target) => {
+    if (target.charCode === 13)
+      handleSendMessage();
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="game-room-container">
-        <div className="board-container">
-          <GameRoomContext.Provider value={context}>
-            <Board board={playerViewBoard} playerColor={playerColor} move={sendMove} history={history} />
-          </GameRoomContext.Provider>
+      <DndProvider backend={HTML5Backend}>
+        <div className="game-room-container">
+          <div className="board-container">
+            <Board board={playerViewBoard} playerColor={chess.playerColor} move={chess.sendMove} getMoves={chess.getMoves} history={chess.history} />
+          </div>
+          <div className="chat-container">
+            <div className="chat">
+              <div className="message-list-container">
+                <ListGroup className="message-list">
+                  {chat.messages.reverse().map((message, i) => (
+                    <ListGroup.Item key={i} className={message.ownedByCurrentUser ? "my-message-item" : "received-message-item"}>
+                      {message.body}
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </div>
+              <div className="message-form-container">
+                <InputGroup className="message-form">
+                  <Form.Control
+                    type="text"
+                    value={newMessage}
+                    onChange={handleNewMessageChange}
+                    placeholder="Write message..."
+                    className="message-input-field"
+                    autofocus="true"
+                    ref={(button) => { input = button }}
+                    onKeyPress={handleKeyPress}
+                  />
+                  <InputGroup.Append>
+                    <Button variant="secondary" onClick={handleSendMessage} className="send-message-button">Send</Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </DndProvider>
+      </DndProvider>
   );
 };
 

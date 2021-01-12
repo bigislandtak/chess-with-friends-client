@@ -1,8 +1,8 @@
 import React from "react";
-import { useDrag, DragPreviewImage } from "react-dnd";
+import { useDrag } from "react-dnd";
 
 const Piece = (props) => {
-    const [{ isDragging }, drag, preview] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
         item: { 
             type: "piece", 
             id: `${props.position}_${props.piece.type}_${props.piece.color}` 
@@ -16,7 +16,6 @@ const Piece = (props) => {
 
     return (
         <>
-            <DragPreviewImage connect={preview} src={piece} className="preview"/>
             <div 
                 className="piece-container"
                 ref={drag} 

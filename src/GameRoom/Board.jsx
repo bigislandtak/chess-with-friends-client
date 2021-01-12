@@ -1,11 +1,8 @@
-import React, { useState, useContext } from "react";
-import { GameRoomContext } from "./GameRoom";
+import React from "react";
 import Square from "./Square";
 
 const Board = (props) => {
     console.log("Board rendered")
-
-    const context = useContext(GameRoomContext);
 
     const getCoordinates = (squareIdx) => {
         const x = (props.playerColor === 'w')? squareIdx % 8 : Math.abs(squareIdx % 8 - 7);
@@ -33,12 +30,7 @@ const Board = (props) => {
                 position={getSquarePosition(squareIdx)}
                 move={props.move}
                 history={props.history}
-                // squareIdx={squareIdx} 
-                // onClickPiece={handleClickPiece(squareIdx)}
-                // onClickSquare={handleClickSquare}
-                // style={{
-                //     border: states.borders[squareIdx]
-                // }}
+                getMoves={props.getMoves}
             />
         </div>
     );
