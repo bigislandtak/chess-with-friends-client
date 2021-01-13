@@ -41,33 +41,38 @@ const GameRoom = (props) => {
           <div className="board-container">
             <Board board={playerViewBoard} playerColor={chess.playerColor} move={chess.sendMove} getMoves={chess.getMoves} history={chess.history} />
           </div>
-          <div className="chat-container">
-            <div className="chat">
-              <div className="message-list-container">
-                <ListGroup className="message-list">
-                  {chat.messages.reverse().map((message, i) => (
-                    <ListGroup.Item key={i} className={message.ownedByCurrentUser ? "my-message-item" : "received-message-item"}>
-                      {message.body}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              </div>
-              <div className="message-form-container">
-                <InputGroup className="message-form">
-                  <Form.Control
-                    type="text"
-                    value={newMessage}
-                    onChange={handleNewMessageChange}
-                    placeholder="Write message..."
-                    className="message-input-field"
-                    autofocus="true"
-                    ref={(button) => { input = button }}
-                    onKeyPress={handleKeyPress}
-                  />
-                  <InputGroup.Append>
-                    <Button variant="secondary" onClick={handleSendMessage} className="send-message-button">Send</Button>
-                  </InputGroup.Append>
-                </InputGroup>
+          <div className="control-chat-container">
+            <div className="control-container">
+              control
+            </div>
+            <div className="chat-container">
+              <div className="chat">
+                <div className="message-list-container">
+                  <ListGroup className="message-list">
+                    {chat.messages.map((message, i) => (
+                      <ListGroup.Item key={i} className={message.ownedByCurrentUser ? "my-message-item" : "received-message-item"}>
+                        {message.body}
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                </div>
+                <div className="message-form-container">
+                  <InputGroup className="message-form">
+                    <Form.Control
+                      type="text"
+                      value={newMessage}
+                      onChange={handleNewMessageChange}
+                      placeholder="Write message..."
+                      className="message-input-field"
+                      autofocus="true"
+                      ref={(button) => { input = button }}
+                      onKeyPress={handleKeyPress}
+                    />
+                    <InputGroup.Append>
+                      <Button variant="secondary" onClick={handleSendMessage} className="send-message-button">Send</Button>
+                    </InputGroup.Append>
+                  </InputGroup>
+                </div>
               </div>
             </div>
           </div>

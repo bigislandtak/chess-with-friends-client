@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 const chess = require('chess.js');
 
-const SERVER_URL = "http://localhost:8080";
+const SERVER_URL = "http://192.168.1.187:3000";
 
 const useSocket = (roomId) => {
     const gameRef = useRef();
@@ -60,7 +60,7 @@ const useSocket = (roomId) => {
                 ...message,
                 ownedByCurrentUser: message.senderId === socketRef.current.id
             }
-            setMessages(messages => [...messages, incomingMessage]);
+            setMessages(messages => [incomingMessage, ...messages]);
         });
 
         // Frees socket reference when connection is closed
