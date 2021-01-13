@@ -20,7 +20,7 @@ const Square = (props) => {
             const moves = props.getMoves();
             for (let i = 0; i < moves.length; i++) {
                 if (move.from === moves[i].from && move.to === moves[i].to) {
-                    const sound = (moves[i].flags === 'c')? new Audio("/sounds/capture.mp3") : new Audio("/sounds/move.mp3");
+                    const sound = (moves[i].flags === 'c')? new Audio(`${process.env.PUBLIC_URL}/sounds/capture.mp3`) : new Audio(`${process.env.PUBLIC_URL}/sounds/move.mp3`);
                     sound.play();
                 }
             }

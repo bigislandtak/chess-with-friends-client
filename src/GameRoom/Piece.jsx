@@ -12,7 +12,7 @@ const Piece = (props) => {
         }
     });
     
-    const piece = `assets/${props.piece.type}_${props.piece.color}.png`;   
+    const piece = `${process.env.PUBLIC_URL}/assets/${props.piece.type}_${props.piece.color}.png`;   
 
     return (
         <>
