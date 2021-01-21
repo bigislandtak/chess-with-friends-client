@@ -57,13 +57,19 @@ const useSocket = (roomId) => {
         });
         
         // Listen for incoming moves
-        socketRef.current.on("newMove", move => {
-            gameRef.current.move(move);
-            setChessStates({
-                board: gameRef.current.board(),
-                history: gameRef.current.history({ verbose: true }),
-                isGameOver: gameRef.current.game_over()
-            });
+        socketRef.current.on("newMove", (move, senderId) => {
+            if (socketRef.current.id !== senderId) {
+                const valid = gameRef.current.move(move);
+                const history = gameRef.current.history({ verbose: true });        
+                const sound = (history[history.length - 1].flags === 'c')? new Audio(`${process.env.PUBLIC_URL}/sounds/capture.mp3`) : new Audio(`${process.env.PUBLIC_URL}/sounds/move.mp3`);
+                if (valid)
+                    sound.play();
+                setChessStates({
+                    board: gameRef.current.board(),
+                    history: history,
+                    isGameOver: gameRef.current.game_over()
+                });
+            }
         });
 
         socketRef.current.on("undoRequest", (senderId) => {
@@ -129,13 +135,17 @@ const useSocket = (roomId) => {
     const sendMove = (move) => {
         const validColor = gameRef.current.turn() === color;
         if (color === gameRef.current.turn()) {
-            gameRef.current.move(move);
+            const valid = gameRef.current.move(move);
+            const history = gameRef.current.history({ verbose: true });        
+            const sound = (history[history.length - 1].flags === 'c')? new Audio(`${process.env.PUBLIC_URL}/sounds/capture.mp3`) : new Audio(`${process.env.PUBLIC_URL}/sounds/move.mp3`);
+            if (valid)
+                sound.play();
             setChessStates({
                 board: gameRef.current.board(),
                 history: gameRef.current.history({ verbose: true }),
                 isGameOver: gameRef.current.game_over()
             });
-            socketRef.current.emit("newMove", move);
+            socketRef.current.emit("newMove", move, socketRef.current.id);
         }
 
         return validColor;

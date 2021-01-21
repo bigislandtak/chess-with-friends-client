@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Square from "./Square";
 
 const Board = (props) => {
+    const [pickedPiece, setPickedPiece] = useState("none");
+
     const getCoordinates = (squareIdx) => {
         const x = (props.playerColor === 'w')? squareIdx % 8 : Math.abs(squareIdx % 8 - 7);
         const y = (props.playerColor === 'w')? Math.abs(Math.floor(squareIdx / 8) - 7) : Math.floor(squareIdx / 8);
@@ -20,6 +22,16 @@ const Board = (props) => {
         return color;
     };
 
+    const clickMove = (position) => {
+        if (pickedPiece === "none") {
+            setPickedPiece(position);
+            console.log(`pickedPiece: ${position}`)
+        } else {
+            setPickedPiece("none")
+            props.move({ from: pickedPiece, to: position })
+        }
+    };
+
     const squares = props.board.map((piece, squareIdx) =>
         <div key={squareIdx} className="square-container">
             <Square 
@@ -30,6 +42,8 @@ const Board = (props) => {
                 move={props.move}
                 history={props.history}
                 getMoves={props.getMoves}
+                onClick={(position) => clickMove(position)}
+                pickedPiece={pickedPiece}
             />
         </div>
     );

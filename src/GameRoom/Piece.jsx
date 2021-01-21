@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 
 const Piece = (props) => {
@@ -12,14 +12,9 @@ const Piece = (props) => {
         }
     });
 
-    // const [{ isOver }, drop] = useDrop({
-    //     accept: "piece",
-    //     collect: (monitor) => {
-    //         return { isOver: !!monitor.isOver() };
-    //     }
-    // });
+    const [isSelected, setIsSelected] = useState(false);
     
-    const piece = `${process.env.PUBLIC_URL}/assets/${props.piece.type}_${props.piece.color}.png`;  
+    const piece = `${process.env.PUBLIC_URL}/assets/old_design/${props.piece.type}_${props.piece.color}.png`;  
     const whiteToBlackCol = {
         "a": "h",
         "b": "g",
@@ -42,6 +37,8 @@ const Piece = (props) => {
         "8": "1",
     };
 
+    
+
     const col = (props.playerColor === 'w')? props.position.charAt(0) : whiteToBlackCol[props.position.charAt(0)];
     const row = (props.playerColor === 'w')? props.position.charAt(1) : whiteToBlackRow[props.position.charAt(1)];
     const pieceClassName = `piece ${col} _${row}`;
@@ -50,8 +47,9 @@ const Piece = (props) => {
         <>
             <div 
                 className="piece-container"
+                id={`piece-container-${props.position}`}
                 style={{
-                    boxShadow: isDragging? "inset 0px 0px 25px 5px #BDE3AC, 0px 0px 25px 5px #BDE3AC" : "none",
+                    boxShadow: (isDragging || props.pickedPiece === props.position)? `inset 0px 0px 50px 50px ${props.activeSquareColor}` : "none",
                 }}
             >
                 <img 
